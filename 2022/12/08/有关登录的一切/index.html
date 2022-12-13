@@ -1,0 +1,497 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>关于登录的一切 | mark-pomelo</title><meta name="author" content="mark"><meta name="copyright" content="mark"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="关于登录的一切最近在盘点公司的项目源码，第一次真正接触到《单点登录》的实际应用，为了加深理解，便系统性的复习了 “关于登录的一切”，也参考的b站和掘金的优质博主的资料，整理学习笔记。  鸿雁在鱼于在水  前置的知识点 会使用浏览器控制台查看network 对通信协议有基本的认识，知道啥是HTTP，甚至居然分得清请求头和响应头 对登录功能或多或少有过一定的开发经验（小柚智汇） 模糊的知道cookie">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于登录的一切">
+<meta property="og:url" content="http://mark-pomelo.love/2022/12/08/%E6%9C%89%E5%85%B3%E7%99%BB%E5%BD%95%E7%9A%84%E4%B8%80%E5%88%87/index.html">
+<meta property="og:site_name" content="mark-pomelo">
+<meta property="og:description" content="关于登录的一切最近在盘点公司的项目源码，第一次真正接触到《单点登录》的实际应用，为了加深理解，便系统性的复习了 “关于登录的一切”，也参考的b站和掘金的优质博主的资料，整理学习笔记。  鸿雁在鱼于在水  前置的知识点 会使用浏览器控制台查看network 对通信协议有基本的认识，知道啥是HTTP，甚至居然分得清请求头和响应头 对登录功能或多或少有过一定的开发经验（小柚智汇） 模糊的知道cookie">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://liyun-oss1.oss-cn-beijing.aliyuncs.com/blog-mark/%E5%B0%81%E9%9D%A2/9.png">
+<meta property="article:published_time" content="2022-12-08T10:00:00.000Z">
+<meta property="article:modified_time" content="2022-12-08T10:00:00.000Z">
+<meta property="article:author" content="mark">
+<meta property="article:tag" content="交互">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://liyun-oss1.oss-cn-beijing.aliyuncs.com/blog-mark/%E5%B0%81%E9%9D%A2/9.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://mark-pomelo.love/2022/12/08/%E6%9C%89%E5%85%B3%E7%99%BB%E5%BD%95%E7%9A%84%E4%B8%80%E5%88%87/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  noticeOutdate: {"limitDay":365,"position":"top","messagePrev":"It has been","messageNext":"days since the last update, the content of the article may be outdated."},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":230},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: 'days',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"Traditional Chinese Activated Manually","cht_to_chs":"Simplified Chinese Activated Manually","day_to_night":"Dark Mode Activated Manually","night_to_day":"Light Mode Activated Manually","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"top-right"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '关于登录的一切',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-12-08 18:00:00'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="/css/common.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Zfour/Butterfly-double-row-display@1.00/cardlistpost.min.css"/>
+<style>#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags:before {content:"\A";
+  white-space: pre;}#recent-posts > .recent-post-item >.recent-post-info > .article-meta-wrap > .tags > .article-meta__separator{display:none}</style>
+<link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.css" /><link rel="stylesheet" href="https://www.fomal.cc/static/css/runtime.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-categories-card@1.0.0/lib/categorybar.css"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiperstyle.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-filter-gitcalendar/lib/gitcalendar.css" media="print" onload="this.media='all'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="http://exam-1.oss-cn-beijing.aliyuncs.com/png/2022/11/19/16688257149662236.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">9</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 列表</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope-open"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://liyun-oss1.oss-cn-beijing.aliyuncs.com/blog-mark/%E5%B0%81%E9%9D%A2/9.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">mark-pomelo</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group hide" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 列表</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/comments/"><i class="fa-fw fas fa-envelope-open"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">关于登录的一切<a class="post-edit-link" href="null_posts/有关登录的一切.md" title="Edited on" target="_blank"><i class="fas fa-pencil-alt"></i></a></h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2022-12-08T10:00:00.000Z" title="Created 2022-12-08 18:00:00">2022-12-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2022-12-08T10:00:00.000Z" title="Updated 2022-12-08 18:00:00">2022-12-08</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/web%E5%89%8D%E7%AB%AF/">web前端</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="关于登录的一切"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="关于登录的一切"><a href="#关于登录的一切" class="headerlink" title="关于登录的一切"></a>关于登录的一切</h1><p>最近在盘点公司的项目源码，第一次真正接触到《单点登录》的实际应用，为了加深理解，便系统性的复习了 “关于登录的一切”，也参考的b站和掘金的优质博主的资料，整理学习笔记。</p>
+<blockquote>
+<p>鸿雁在鱼于在水</p>
+</blockquote>
+<h2 id="前置的知识点"><a href="#前置的知识点" class="headerlink" title="前置的知识点"></a>前置的知识点</h2><ul>
+<li>会使用浏览器控制台查看network</li>
+<li>对通信协议有基本的认识，知道啥是HTTP，甚至居然分得清请求头和响应头</li>
+<li>对登录功能或多或少有过一定的开发经验（小柚智汇）</li>
+<li>模糊的知道cookie的作用和意义</li>
+<li>一知半解的使用过token</li>
+<li>用过第三方登录，思考过它的原理（小医智汇）</li>
+<li>对于登录有一脑袋问号，需要人答疑解惑</li>
+</ul>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://images.gitee.com/uploads/images/2021/1113/223659_65958ec1_9194552.png"></p>
+<p>登录，一个页面两个输入框，看起来如此的简单，才导致初学者产生了莫名的自信，想要搞明白关于登录的一切，就先得知道HTTP是什么？</p>
+<h2 id="HTTP的特点"><a href="#HTTP的特点" class="headerlink" title="HTTP的特点"></a>HTTP的特点</h2><p>我们知道，HTTP 是无状态的。也就是说，<strong>HTTP 请求方和响应方间无法维护状态</strong>，都是一次性的，通信完成，链接就会断开。但有的场景下，我们需要维护状态。最典型的，一个用户登陆微博，发布、关注、评论，都应是在登录后的用户状态下的。</p>
+<p><strong>为什么浏览器跟服务器要断开链接呢？</strong></p>
+<p>因为如果长时间保持这个链接，会占用大量的服务器资源，那么服务器能同时服务的客户端数量就会变得很少</p>
+<p><strong>标记</strong></p>
+<p>那解决办法是什么呢？mark对 是我本人~</p>
+<blockquote>
+<p>在学校或公司，入学入职那一天起，会录入你的身份、账户信息，然后给你发个卡，今后在园区内，你的门禁、打卡、消费都只需要刷这张卡。</p>
+</blockquote>
+<p><strong>前端存储</strong></p>
+<p>这就涉及到一发、一存、一带，发好办，登陆接口直接返回给前端，存储就需要前端想办法了。</p>
+<blockquote>
+<p>前提是，你要把卡带在身上。</p>
+</blockquote>
+<p>前端的存储方式有很多。</p>
+<ul>
+<li>最矬的，挂到全局变量上，但这是个「体验卡」，一次刷新页面就没了</li>
+<li>高端点的，存到 cookie、localStorage 等里，这属于「会员卡」，无论怎么刷新，只要浏览器没清掉或者过期，就一直拿着这个状态。</li>
+</ul>
+<p>有地方存了，请求的时候就可以拼到参数里带给接口了。</p>
+<h2 id="基石：cookie"><a href="#基石：cookie" class="headerlink" title="基石：cookie"></a>基石：cookie</h2><blockquote>
+<p>可是前端好麻烦啊，又要自己存，又要想办法带出去，有没有不用操心的？</p>
+</blockquote>
+<p>有，cookie。</p>
+<p>cookie 也是前端存储的一种，但相比于 localStorage 等其他方式，借助 HTTP 头、浏览器能力，cookie 可以做到前端无感知。</p>
+<p>一般过程是这样的：</p>
+<ul>
+<li>在提供标记的接口，通过 HTTP 返回头的 Set-Cookie 字段，直接「种」到浏览器上</li>
+<li>浏览器发起请求时，会自动把 cookie 通过 HTTP 请求头的 Cookie 字段，带给接口</li>
+</ul>
+<p><strong>配置：Domain / Path</strong></p>
+<blockquote>
+<p>你不能拿清华的校园卡进北大。</p>
+</blockquote>
+<p><strong>配置：Expires / Max-Age</strong></p>
+<blockquote>
+<p>你毕业了卡就不好使了。</p>
+</blockquote>
+<p><strong>配置：Secure / HttpOnly</strong></p>
+<blockquote>
+<p>有的学校规定，不带卡套不让刷（什么奇葩学校，假设）；有的学校不让自己给卡贴贴纸。</p>
+</blockquote>
+<p><strong>前端对 cookie 的读写</strong></p>
+<p>前端可以自己创建 cookie，如果服务端创建的 cookie 没加<code>HttpOnly</code>，那恭喜你也可以修改他给的 cookie。</p>
+<p>调用<code>document.cookie</code>可以创建、修改 cookie，和 HTTP 一样，一次<code>document.cookie</code>能且只能操作一个 cookie。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">document</span>.<span class="property">cookie</span> = <span class="string">&#x27;username=jimu; domain=jimu.com; path=/blog; Expires=Wed, 21 Oct 2015 07:28:00 GMT; Secure; HttpOnly&#x27;</span>;</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<p>调用<code>document.cookie</code>也可以读到 cookie，也和 HTTP 一样，能读到所有的非<code>HttpOnly</code> cookie。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">document</span>.<span class="property">cookie</span>);</span><br><span class="line"><span class="comment">// username=jimu; height=180; weight=80</span></span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+
+<p>（就一个 cookie 属性，为什么读写行为不一样？get / set 了解下）</p>
+<h2 id="cookie在跨越访问时的安全策略"><a href="#cookie在跨越访问时的安全策略" class="headerlink" title="cookie在跨越访问时的安全策略"></a>cookie在跨越访问时的安全策略</h2><p><strong>【samesite:strict】</strong>   此时，浏览器会采用严格禁止的策略。b.com访问a.com时想携带a.com的cookie，任何情况下不允许！</p>
+<p><strong>【samesite:lax】</strong>  浏览器会采用适当禁止的策略。b.com访问a.com时想携带a.com的cookie,那么超链接、预加载、表单get提交是允许的。但如果是图片地址、ajax、iframe这种访问，是禁止携带cookie的。  默认级别</p>
+<p><strong>【samesite:none】</strong> 浏览器没有任何限制。</p>
+<p><strong>cookie 是维持 HTTP 请求状态的基石</strong></p>
+<p>了解了 cookie 后，我们知道 cookie 是最便捷的维持 HTTP 请求状态的方式，大多数前端鉴权问题都是靠 cookie 解决的。当然也可以选用别的存储方式（后面也会多多少少提到）。</p>
+<p>那有了存储工具，接下来怎么做呢？</p>
+<h2 id="应用方案：服务端-session"><a href="#应用方案：服务端-session" class="headerlink" title="应用方案：服务端 session"></a>应用方案：服务端 session</h2><p>现在回想下，你刷卡的时候发生了什么？</p>
+<blockquote>
+<p>其实你的卡上只存了一个 id（可能是你的学号），刷的时候物业系统去查你的信息、账户，再决定「这个门你能不能进」「这个鸡腿去哪个账户扣钱」。</p>
+</blockquote>
+<p>这种操作，在前后端鉴权系统中，叫 session。</p>
+<p>典型的 session 登陆/验证流程：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/37adb2019d064967923a659848870771~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp" alt="img"></p>
+<ul>
+<li>浏览器登录发送账号密码，服务端查用户库，校验用户</li>
+<li>服务端把用户登录状态存为 Session，生成一个 sessionId</li>
+<li>通过登录接口返回，把 sessionId set 到 cookie 上</li>
+<li>此后浏览器再请求业务接口，sessionId 随 cookie 带上</li>
+<li>服务端查 sessionId 校验 session</li>
+<li>成功后正常做业务处理，返回结果</li>
+</ul>
+<h2 id="token"><a href="#token" class="headerlink" title="token"></a>token</h2><p>session 的维护给服务端造成很大困扰，我们必须找地方存放它，又要考虑分布式的问题，甚至要单独为了它启用一套 Redis 集群。有没有更好的办法？</p>
+<blockquote>
+<p>我又想到学校，在没有校园卡技术以前，我们都靠「学生证」。 门卫小哥直接对照我和学生证上的脸，确认学生证有效期、年级等信息，就可以放行了。</p>
+</blockquote>
+<p>回过头来想想，一个登录场景，也不必往 session 存太多东西，那为什么不直接打包到 cookie 中呢？这样服务端不用存了，每次只要核验 cookie 带的「证件」有效性就可以了，也可以携带一些轻量的信息。</p>
+<p>这种方式通常被叫做 token。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a1c57a08eb204f528256f3980c721148~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp" alt="img"></p>
+<p>token 的流程是这样的：</p>
+<ul>
+<li>用户登录，服务端校验账号密码，获得用户信息</li>
+<li>把用户信息、token 配置编码成 token，通过 cookie set 到浏览器</li>
+<li>此后用户请求业务接口，通过 cookie 携带 token</li>
+<li>接口校验 token 有效性，进行正常业务接口处理</li>
+</ul>
+<p><strong>客户端 token 的存储方式</strong></p>
+<p>在前面 cookie 说过，cookie 并不是客户端存储凭证的唯一方式。token 因为它的「无状态性」，有效期、使用限制都包在 token 内容里，对 cookie 的管理能力依赖较小，客户端存起来就显得更自由。但 web 应用的主流方式仍是放在 cookie 里，毕竟少操心。</p>
+<p><strong>token 的过期</strong></p>
+<p>那我们如何控制 token 的有效期呢？很简单，把「过期时间」和数据一起塞进去，验证时判断就好。</p>
+<p><strong>Token 的安全性</strong></p>
+<p>安全概览</p>
+<p>为了减少 JWT Token 的泄漏风险，其有效期应该设置得短一些并采用 HTTPS 协议。这样就会存在 JWT Token 过期的情况，导致用户频繁的去登录获取新的 JWT Token，严重影响用户体验</p>
+<p>解决方案</p>
+<p>生成 JWT Token 的同时生成 refresh_token，其中 refresh_token 的有效时间长于 JWT Token，当 JWT Token 过期之后，使用 refresh_token 获取新的 JWT Token 与 refresh_token，这样用户就可以享受无感知的刷新体验</p>
+<h2 id="单点登录"><a href="#单点登录" class="headerlink" title="单点登录"></a>单点登录</h2><p>前面我们已经知道了，在同域下的客户端/服务端认证系统中，通过客户端携带凭证，维持一段时间内的登录状态。</p>
+<p>但当我们业务线越来越多，就会有更多业务系统分散到不同域名下，就需要「一次登录，全线通用」的能力，叫做「单点登录」。</p>
+<p>比如滴滴这么潮的公司，同时拥有<code>didichuxing.com</code> <code>xiaojukeji.com</code> <code>didiglobal.com</code>等域名，种 cookie 是完全绕不开的。</p>
+<p>这要能实现「一次登录，全线通用」，才是真正的单点登录。</p>
+<p>这种场景下，我们需要独立的认证服务，通常被称为 SSO。</p>
+<p><strong>一次「从 A 系统引发登录，到 B 系统不用登录」的完整流程</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/bf2e8ba61fc94b52be164c207b9d8358~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp" alt="img"></p>
+<ul>
+<li>用户进入 A 系统，没有登录凭证（ticket），A 系统给他跳到 SSO</li>
+<li>SSO 没登录过，也就没有 sso 系统下没有凭证（注意这个和前面 A ticket 是两回事），输入账号密码登录</li>
+<li>SSO 账号密码验证成功，通过接口返回做两件事：一是种下 sso 系统下凭证（记录用户在 SSO 登录状态）；二是下发一个 ticket</li>
+<li>客户端拿到 ticket，保存起来，带着请求系统 A 接口</li>
+<li>系统 A 校验 ticket，成功后正常处理业务请求</li>
+<li>此时用户第一次进入系统 B，没有登录凭证（ticket），B 系统给他跳到 SSO</li>
+<li>SSO 登录过，系统下有凭证，不用再次登录，只需要下发 ticket</li>
+<li>客户端拿到 ticket，保存起来，带着请求系统 B 接口</li>
+</ul>
+<h2 id="微信授权登录"><a href="#微信授权登录" class="headerlink" title="微信授权登录"></a>微信授权登录</h2><p>一般使用auth2.0协议</p>
+<p><strong>oauth2.0使用场景</strong></p>
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><p>假如我有一个网站，你是我网站上的访客，看了文章想留言表示「朕已阅」，留言时发现有这个网站的帐号才能够留言，此时给了你两个选择：一个是在我的网站上注册拥有一个新账户，然后用注册的用户名来留言；一个是使用 github 帐号登录，使用你的 github 用户名来留言。前者你觉得过于繁琐，于是惯性地点击了 github 登录按钮，此时 OAuth 认证流程就开始了。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s3.uuu.ovh/imgs/2022/12/09/ebeeb5041dbd22b2.png" alt="https://s3.uuu.ovh/imgs/2022/12/09/ebeeb5041dbd22b2.png"></p>
+<p>我们看图可以知道，这里最大的问题是，单凭用户的昵称无法区分用户的唯一性，虽然有openid，但openid仅仅对微信有效，如果换成QQ或者微博登录呢？因此，此时的app只是帮你注册了一个临时账号，通常这个时候，app就会不停的催促你绑定手机号，确保唯一性。</p>
+<h2 id="验证码"><a href="#验证码" class="headerlink" title="验证码"></a>验证码</h2><p>通常有两个作用</p>
+<ol>
+<li>防止批量或恶意的提交，干扰平台正常秩序。因此这类会做的比较复杂，比如图片滑动。<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s3.uuu.ovh/imgs/2022/12/09/5216bdf92591f1a9.png" alt="https://s3.uuu.ovh/imgs/2022/12/09/5216bdf92591f1a9.png"></li>
+<li>第二是为了确保是你本人登录，经常使用的短信验证码。  中间发送短信是最关键的一步。<img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s3.uuu.ovh/imgs/2022/12/09/ab9e091ebd8109a6.png" alt="https://s3.uuu.ovh/imgs/2022/12/09/ab9e091ebd8109a6.png"></li>
+</ol>
+<h2 id="二维码登录"><a href="#二维码登录" class="headerlink" title="二维码登录"></a>二维码登录</h2><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://s3.uuu.ovh/imgs/2022/12/09/8783dccb2a91540b.png" alt="https://s3.uuu.ovh/imgs/2022/12/09/8783dccb2a91540b.png"></p>
+<p><strong>本质</strong></p>
+<p>二维码登录本质上也是一种登录认证方式。既然是登录认证，要做的也就两件事情！</p>
+<ol>
+<li>告诉系统我是谁</li>
+<li>向系统证明我是谁</li>
+</ol>
+<p>比如账号密码登录，账号就是告诉系统我是谁， 密码就是向系统证明我是谁; 比如手机验证码登录，手机号就是告诉系统我是谁，验证码就是向系统证明我是谁;</p>
+<p>手机端应用扫PC端二维码，手机端确认后，账号就在PC端登录成功了！这里，PC端登录的账号肯定与手机端是同一个账号。不可能手机端登录的是账号A，而扫码登录以后，PC端登录的是账号B。</p>
+<p>所以，<strong>第一件事情，告诉系统我是谁，是比较清楚的！</strong></p>
+<p>通过扫描二维码，把手机端的账号信息传递到PC端，至于是怎么传的，我们后面再说</p>
+<p><strong>第二件事情，向系统证明我是谁。</strong>扫码登录过程中，用户并没有去输入密码，也没有输入验证码，或者其他什么码。那是怎么证明的呢？</p>
+<p>有些同学会想到，是不是扫码过程中，把密码传到了PC端呢？ 但这是不可能的。因为那样太不安全的，客户端也根本不会去存储密码。我们仔细想一下，其实手机端APP它是已经登录过的，就是说手机端是已经通过登录认证。所说只要<strong>扫码确认是这个手机且是这个账号操作的，其实就能间接证明我谁。</strong></p>
+<p><strong>扫描二维码的大致流程</strong></p>
+<ol>
+<li>扫码前，手机端应用是已登录状态，PC端显示一个二维码，等待扫描</li>
+<li>手机端打开应用，扫描PC端的二维码，扫描后，会提示”已扫描，请在手机端点击确认”</li>
+<li>用户在手机端点击确认，确认后PC端登录就成功了</li>
+</ol>
+<p>可以看到，二维码在中间有三个状态， <strong>待扫描，已扫描待确认，已确认</strong>。 那么可以想象</p>
+<ul>
+<li>二维码的背后它一定存在一个唯一性的ID，当二维码生成时，这个ID也一起生成，并且绑定了PC端的设备信息</li>
+<li>手机去扫描这个二维码</li>
+<li>二维码切换为 已扫描待确认状态， 此时就会将账号信息与这个ID绑定</li>
+<li>当手机端确认登录时，它就会生成PC端用于登录的token，并返回给PC端</li>
+</ul>
+<p><strong>二维码准备</strong></p>
+<p>按二维码不同状态来看， 首先是等待扫描状态，用户打开PC端，切换到二维码登录界面时。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/74b521bcf35d4215a97a9bea4ae8146d~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.image" alt="1111.jpg"></p>
+<ol>
+<li>PC端向服务端发起请求，告诉服务端，我要生成用户登录的二维码，并且把PC端设备信息也传递给服务端</li>
+<li>服务端收到请求后，它生成二维码ID，并将二维码ID与PC端设备信息进行绑定</li>
+<li>然后把二维码ID返回给PC端</li>
+<li>PC端收到二维码ID后，生成二维码(二维码中肯定包含了ID)</li>
+<li>为了及时知道二维码的状态，客户端在展现二维码后，PC端不断的轮询服务端，比如每隔一秒就轮询一次，请求服务端告诉当前二维码的状态及相关信息</li>
+</ol>
+<p>二维码已经准好了，接下来就是扫描状态</p>
+<p><strong>扫码状态切换</strong></p>
+<ol>
+<li>用户用手机去扫描PC端的二维码，通过二维码内容取到其中的二维码ID</li>
+<li>再调用服务端API将移动端的身份信息与二维码ID一起发送给服务端</li>
+<li>服务端接收到后，它可以将身份信息与二维码ID进行绑定，生成临时token。然后返回给手机端</li>
+<li>因为PC端一直在轮询二维码状态，所以这时候二维码状态发生了改变，它就可以在界面上把二维码状态更新为已扫描</li>
+</ol>
+<p>那么为什么需要返回给手机端一个临时token呢？临时token与token一样，它也是一种身份凭证，不同的地方在于它只能用一次，用过就失效。</p>
+<p>在第三步骤中返回临时token，为的就是手机端在下一步操作时，可以用它作为凭证。以此确保扫码，登录两步操作是同一部手机端发出的，</p>
+<p><strong>状态确认</strong></p>
+<ol>
+<li>手机端在接收到临时token后会弹出确认登录界面，用户点击确认时，手机端携带临时token用来调用服务端的接口，告诉服务端，我已经确认</li>
+<li>服务端收到确认后，根据二维码ID绑定的设备信息与账号信息，生成用户PC端登录的token</li>
+<li>这时候PC端的轮询接口，它就可以得知二维码的状态已经变成了”已确认”。并且从服务端可以获取到用户登录的token</li>
+<li>到这里，登录就成功了</li>
+</ol>
+<p><strong>总结</strong></p>
+<p>PC端通过接口请求生成二维码，二维码信息包括二维码id与设备信息，用户扫码移动端获取二维码id与设备信息，然后移动端将二维码id、PC设备信息、账号发送给服务端，服务端返回给移动端临时token，用户点击移动端确认，将临时token发送给服务端，服务端通过临时token比对扫码与确认是否为同一设备，得知用户已确认，生成PC端token。整个扫码登录过程中，PC端一生成二维码后就会轮询询问二维码状态，从而做出对应的UI变化，PC端得到PC端token即登录成功。</p>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>我们要搞清楚一切的起因是因为HTTP的无状态性质。</p>
+<blockquote>
+<p>理清概念，一身轻松</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="http://mark-pomelo.love">mark</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://mark-pomelo.love/2022/12/08/%E6%9C%89%E5%85%B3%E7%99%BB%E5%BD%95%E7%9A%84%E4%B8%80%E5%88%87/">http://mark-pomelo.love/2022/12/08/%E6%9C%89%E5%85%B3%E7%99%BB%E5%BD%95%E7%9A%84%E4%B8%80%E5%88%87/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E4%BA%A4%E4%BA%92/">交互</a></div><div class="post_share"><div class="social-share" data-image="https://liyun-oss1.oss-cn-beijing.aliyuncs.com/blog-mark/%E5%B0%81%E9%9D%A2/9.png" data-sites="facebook,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2022/12/05/%E9%98%B2%E6%8A%96/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://liyun-oss1.oss-cn-beijing.aliyuncs.com/blog-mark/%E5%B0%81%E9%9D%A2/6.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">JS性能优化之防抖节流函数</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="http://exam-1.oss-cn-beijing.aliyuncs.com/png/2022/11/19/16688257149662236.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">mark</div><div class="author-info__description">个人博客</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Yun-mark"><i class="fab fa-github"></i><span>欢迎我的世界</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Yun-mark" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:1304101539@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">欢迎来到我的博客</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E7%99%BB%E5%BD%95%E7%9A%84%E4%B8%80%E5%88%87"><span class="toc-number">1.</span> <span class="toc-text">关于登录的一切</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E7%9A%84%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="toc-number">1.1.</span> <span class="toc-text">前置的知识点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP%E7%9A%84%E7%89%B9%E7%82%B9"><span class="toc-number">1.2.</span> <span class="toc-text">HTTP的特点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%9F%B3%EF%BC%9Acookie"><span class="toc-number">1.3.</span> <span class="toc-text">基石：cookie</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cookie%E5%9C%A8%E8%B7%A8%E8%B6%8A%E8%AE%BF%E9%97%AE%E6%97%B6%E7%9A%84%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5"><span class="toc-number">1.4.</span> <span class="toc-text">cookie在跨越访问时的安全策略</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E6%96%B9%E6%A1%88%EF%BC%9A%E6%9C%8D%E5%8A%A1%E7%AB%AF-session"><span class="toc-number">1.5.</span> <span class="toc-text">应用方案：服务端 session</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#token"><span class="toc-number">1.6.</span> <span class="toc-text">token</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E7%82%B9%E7%99%BB%E5%BD%95"><span class="toc-number">1.7.</span> <span class="toc-text">单点登录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%AE%E4%BF%A1%E6%8E%88%E6%9D%83%E7%99%BB%E5%BD%95"><span class="toc-number">1.8.</span> <span class="toc-text">微信授权登录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">1.9.</span> <span class="toc-text">使用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E7%A0%81"><span class="toc-number">1.10.</span> <span class="toc-text">验证码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E7%BB%B4%E7%A0%81%E7%99%BB%E5%BD%95"><span class="toc-number">1.11.</span> <span class="toc-text">二维码登录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="toc-number">1.12.</span> <span class="toc-text">总结：</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/12/08/%E6%9C%89%E5%85%B3%E7%99%BB%E5%BD%95%E7%9A%84%E4%B8%80%E5%88%87/" title="关于登录的一切"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://liyun-oss1.oss-cn-beijing.aliyuncs.com/blog-mark/%E5%B0%81%E9%9D%A2/9.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="关于登录的一切"/></a><div class="content"><a class="title" href="/2022/12/08/%E6%9C%89%E5%85%B3%E7%99%BB%E5%BD%95%E7%9A%84%E4%B8%80%E5%88%87/" title="关于登录的一切">关于登录的一切</a><time datetime="2022-12-08T10:00:00.000Z" title="Created 2022-12-08 18:00:00">2022-12-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/05/%E9%98%B2%E6%8A%96/" title="JS性能优化之防抖节流函数"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://liyun-oss1.oss-cn-beijing.aliyuncs.com/blog-mark/%E5%B0%81%E9%9D%A2/6.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JS性能优化之防抖节流函数"/></a><div class="content"><a class="title" href="/2022/12/05/%E9%98%B2%E6%8A%96/" title="JS性能优化之防抖节流函数">JS性能优化之防抖节流函数</a><time datetime="2022-12-05T10:00:00.000Z" title="Created 2022-12-05 18:00:00">2022-12-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/01/JS%E7%9F%A5%E8%AF%86/" title="什么时候不能使用箭头函数？"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://liyun-oss1.oss-cn-beijing.aliyuncs.com/blog-mark/%E5%B0%81%E9%9D%A2/8.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="什么时候不能使用箭头函数？"/></a><div class="content"><a class="title" href="/2022/12/01/JS%E7%9F%A5%E8%AF%86/" title="什么时候不能使用箭头函数？">什么时候不能使用箭头函数？</a><time datetime="2022-12-01T10:00:00.000Z" title="Created 2022-12-01 18:00:00">2022-12-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/27/%E7%AC%AC%E4%B8%83d%E7%AF%87%E6%96%87%E7%AB%A0/" title="Vue相关知识点"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://liyun-oss1.oss-cn-beijing.aliyuncs.com/blog-mark/%E5%B0%81%E9%9D%A2/6.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Vue相关知识点"/></a><div class="content"><a class="title" href="/2022/11/27/%E7%AC%AC%E4%B8%83d%E7%AF%87%E6%96%87%E7%AB%A0/" title="Vue相关知识点">Vue相关知识点</a><time datetime="2022-11-27T10:00:00.000Z" title="Created 2022-11-27 18:00:00">2022-11-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/23/%E7%AC%AC%E5%85%AD%E7%AF%87%E6%96%87%E7%AB%A0/" title="浏览器原理篇"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://liyun-oss1.oss-cn-beijing.aliyuncs.com/blog-mark/%E5%B0%81%E9%9D%A2/8.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="浏览器原理篇"/></a><div class="content"><a class="title" href="/2022/11/23/%E7%AC%AC%E5%85%AD%E7%AF%87%E6%96%87%E7%AB%A0/" title="浏览器原理篇">浏览器原理篇</a><time datetime="2022-11-23T10:00:00.000Z" title="Created 2022-11-23 18:00:00">2022-11-23</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By mark</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="Switch Between Traditional Chinese And Simplified Chinese">繁</button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading the Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script defer src="/js/light.js"></script><canvas id="universe"></canvas><script defer src="/js/universe.js"></script><script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js" defer></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="30" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo injector body_end start --><script data-pjax>
+  function butterfly_clock_anzhiyu_injector_config(){
+    var parent_div_git = document.getElementsByClassName('sticky_layout')[0];
+    var item_html = '<div class="card-widget card-clock"><div class="card-glass"><div class="card-background"><div class="card-content"><div id="hexo_electric_clock"><img class="entered loading" id="card-clock-loading" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/loading.gif" style="height: 120px; width: 100%;" data-ll-status="loading"/></div></div></div></div></div>';
+    console.log('已挂载butterfly_clock_anzhiyu')
+    if(parent_div_git) {
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = '/';
+  var qweather_key = 'b16a1fa0e63c46a4b8f28abfb06ae3fe';
+  var gaud_map_key = 'e2b04289e870b005374ee030148d64fd&s=rsv3';
+  var baidu_ak_key = 'undefined';
+  var flag = 0;
+  var clock_rectangle = '113.34532,23.15624';
+  var clock_default_rectangle_enable = 'false';
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_clock_anzhiyu_injector_config();
+  }
+  </script><script src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script><script data-pjax src="https://cdn.cbd.int/hexo-butterfly-clock-anzhiyu/lib/clock.min.js"></script><script data-pjax>
+  function butterfly_footer_beautify_injector_config(){
+    var parent_div_git = document.getElementById('footer-wrap');
+    var item_html = '<div id="workboard"></div><p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" data-title="博客框架为Hexo_v6.2.0" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Frame-Hexo-blue?style=flat&amp;logo=hexo" alt=""/></a><a class="github-badge" target="_blank" href="https://butterfly.js.org/" style="margin-inline:5px" data-title="主题版本Butterfly_v4.3.1" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Theme-Butterfly-6513df?style=flat&amp;logo=bitdefender" alt=""/></a><a class="github-badge" target="_blank" href="https://vercel.com/" style="margin-inline:5px" data-title="本站采用多线部署，主线路托管于Vercel" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Hosted-Vercel-brightgreen?style=flat&amp;logo=Vercel" alt=""/></a><a class="github-badge" target="_blank" href="https://github.com/" style="margin-inline:5px" data-title="本站项目由Github托管" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Source-Github-d021d6?style=flat&amp;logo=GitHub" alt=""/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" data-title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可" title=""><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://img.shields.io/badge/Copyright-BY--NC--SA%204.0-d42328?style=flat&amp;logo=Claris" alt=""/></a></p>';
+    console.log('已挂载butterfly_footer_beautify')
+    parent_div_git.insertAdjacentHTML("beforeend",item_html)
+    }
+  var elist = 'null'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_footer_beautify_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_footer_beautify_injector_config();
+  }
+  </script><script async src="https://www.fomal.cc/static/js/runtime.js"></script><script data-pjax>
+    function butterfly_categories_card_injector_config(){
+      var parent_div_git = document.getElementById('recent-posts');
+      var item_html = '<style>li.categoryBar-list-item{width:32.3%;}.categoryBar-list{max-height: 190px;overflow:auto;}.categoryBar-list::-webkit-scrollbar{width:0!important}@media screen and (max-width: 650px){.categoryBar-list{max-height: 160px;}}</style><div class="recent-post-item" style="height:auto;width:100%;padding:0px;"><div id="categoryBar"><ul class="categoryBar-list"><li class="categoryBar-list-item" style="background:url(https://liyun-oss1.oss-cn-beijing.aliyuncs.com/blog-mark/%E5%B0%81%E9%9D%A2/9.png);"> <a class="categoryBar-list-link" href="categories/Js/">Js</a><span class="categoryBar-list-count">1</span><span class="categoryBar-list-descr">长篇小说连载</span></li><li class="categoryBar-list-item" style="background:url(https://liyun-oss1.oss-cn-beijing.aliyuncs.com/blog-mark/%E5%B0%81%E9%9D%A2/2.png);"> <a class="categoryBar-list-link" href="categories/web/">web</a><span class="categoryBar-list-count">1</span><span class="categoryBar-list-descr">个人日记</span></li><li class="categoryBar-list-item" style="background:url(https://liyun-oss1.oss-cn-beijing.aliyuncs.com/blog-mark/%E5%B0%81%E9%9D%A2/7.png);"> <a class="categoryBar-list-link" href="categories/杂谈/">杂谈</a><span class="categoryBar-list-count">1</span><span class="categoryBar-list-descr">诗词歌赋</span></li><li class="categoryBar-list-item" style="background:url(https://liyun-oss1.oss-cn-beijing.aliyuncs.com/blog-mark/%E5%B0%81%E9%9D%A2/6.png);"> <a class="categoryBar-list-link" href="categories/web前端/">web前端</a><span class="categoryBar-list-count">2</span><span class="categoryBar-list-descr">杂谈教程</span></li><li class="categoryBar-list-item" style="background:url(undefined);"> <a class="categoryBar-list-link" href="categories/vue/">vue</a><span class="categoryBar-list-count">2</span><span class="categoryBar-list-descr"></span></li><li class="categoryBar-list-item" style="background:url(undefined);"> <a class="categoryBar-list-link" href="categories/java/">java</a><span class="categoryBar-list-count">1</span><span class="categoryBar-list-descr"></span></li><li class="categoryBar-list-item" style="background:url(undefined);"> <a class="categoryBar-list-link" href="categories/浏览器/">浏览器</a><span class="categoryBar-list-count">1</span><span class="categoryBar-list-descr"></span></li><li class="categoryBar-list-item" style="background:url(undefined);"> <a class="categoryBar-list-link" href="categories/计算机/">计算机</a><span class="categoryBar-list-count">1</span><span class="categoryBar-list-descr"></span></li><li class="categoryBar-list-item" style="background:url(undefined);"> <a class="categoryBar-list-link" href="categories/js/">js</a><span class="categoryBar-list-count">1</span><span class="categoryBar-list-descr"></span></li></ul></div></div>';
+      console.log('已挂载butterfly_categories_card')
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      }
+    if( document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    butterfly_categories_card_injector_config()
+    }
+  </script><script data-pjax>
+  function butterfly_swiper_injector_config(){
+    var parent_div_git = document.getElementById('recent-posts');
+    var item_html = '<div class="recent-post-item" style="height: auto;width: 100%"><div class="blog-slider swiper-container-fade swiper-container-horizontal" id="swiper_container"><div class="blog-slider__wrp swiper-wrapper" style="transition-duration: 0ms;"><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="2022/11/15/第四篇文章/" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://liyun-oss1.oss-cn-beijing.aliyuncs.com/blog-mark/%E5%B0%81%E9%9D%A2/8.png" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2022-11-15</span><a class="blog-slider__title" href="2022/11/15/第四篇文章/" alt="">JS基础复习</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div><a class="blog-slider__button" href="2022/11/15/第四篇文章/" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="2022/11/22/第五篇文章/" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://liyun-oss1.oss-cn-beijing.aliyuncs.com/blog-mark/%E5%B0%81%E9%9D%A2/3.png" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2022-11-22</span><a class="blog-slider__title" href="2022/11/22/第五篇文章/" alt="">计算机网络</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div><a class="blog-slider__button" href="2022/11/22/第五篇文章/" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="2022/11/23/第六篇文章/" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://liyun-oss1.oss-cn-beijing.aliyuncs.com/blog-mark/%E5%B0%81%E9%9D%A2/8.png" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2022-11-23</span><a class="blog-slider__title" href="2022/11/23/第六篇文章/" alt="">浏览器原理篇</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div><a class="blog-slider__button" href="2022/11/23/第六篇文章/" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="2022/11/21/第七篇文章/" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://liyun-oss1.oss-cn-beijing.aliyuncs.com/blog-mark/%E5%B0%81%E9%9D%A2/7.png" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2022-11-21</span><a class="blog-slider__title" href="2022/11/21/第七篇文章/" alt="">Vue篇</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div><a class="blog-slider__button" href="2022/11/21/第七篇文章/" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="2022/11/15/第三篇文章/" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://liyun-oss1.oss-cn-beijing.aliyuncs.com/blog-mark/%E5%B0%81%E9%9D%A2/8.png" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2022-11-15</span><a class="blog-slider__title" href="2022/11/15/第三篇文章/" alt="">第三篇文章</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div><a class="blog-slider__button" href="2022/11/15/第三篇文章/" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="2022/11/27/第七d篇文章/" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://liyun-oss1.oss-cn-beijing.aliyuncs.com/blog-mark/%E5%B0%81%E9%9D%A2/6.png" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2022-11-27</span><a class="blog-slider__title" href="2022/11/27/第七d篇文章/" alt="">Vue相关知识点</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div><a class="blog-slider__button" href="2022/11/27/第七d篇文章/" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="2022/11/19/post/" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://liyun-oss1.oss-cn-beijing.aliyuncs.com/blog-mark/%E5%B0%81%E9%9D%A2/8.png" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2022-11-19</span><a class="blog-slider__title" href="2022/11/19/post/" alt="">小柚智汇——web开发规范</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div><a class="blog-slider__button" href="2022/11/19/post/" alt="">详情   </a></div></div><div class="blog-slider__item swiper-slide" style="width: 750px; opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;"><a class="blog-slider__img" href="2022/12/01/JS知识/" alt=""><img width="48" height="48" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="https://liyun-oss1.oss-cn-beijing.aliyuncs.com/blog-mark/%E5%B0%81%E9%9D%A2/8.png" alt="" onerror="this.src=https://unpkg.zhimg.com/akilar-candyassets/image/loading.gif; this.onerror = null;"/></a><div class="blog-slider__content"><span class="blog-slider__code">2022-12-01</span><a class="blog-slider__title" href="2022/12/01/JS知识/" alt="">什么时候不能使用箭头函数？</a><div class="blog-slider__text">再怎么看我也不知道怎么描述它的啦！</div><a class="blog-slider__button" href="2022/12/01/JS知识/" alt="">详情   </a></div></div></div><div class="blog-slider__pagination swiper-pagination-clickable swiper-pagination-bullets"></div></div></div>';
+    console.log('已挂载butterfly_swiper')
+    parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+    }
+  var elist = 'undefined'.split(',');
+  var cpage = location.pathname;
+  var epage = 'all';
+  var flag = 0;
+
+  for (var i=0;i<elist.length;i++){
+    if (cpage.includes(elist[i])){
+      flag++;
+    }
+  }
+
+  if ((epage ==='all')&&(flag == 0)){
+    butterfly_swiper_injector_config();
+  }
+  else if (epage === cpage){
+    butterfly_swiper_injector_config();
+  }
+  </script><script defer src="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper.min.js"></script><script defer data-pjax src="https://npm.elemecdn.com/hexo-butterfly-swiper/lib/swiper_init.js"></script><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '1000ms');
+    arr[i].setAttribute('data-wow-delay', '300ms');
+    arr[i].setAttribute('data-wow-offset', '100');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script></div><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://npm.elemecdn.com/hexo-butterfly-wowjs/lib/wow_init.js"></script><script data-pjax src="https://npm.elemecdn.com/hexo-filter-gitcalendar/lib/gitcalendar.js"></script><script data-pjax>
+  function gitcalendar_injector_config(){
+      var parent_div_git = document.getElementById('gitZone');
+      var item_html = '<div class="recent-post-item" style="width:100%;height:auto;padding:10px;"><style>#git_container{min-height: 280px}@media screen and (max-width:650px) {#git_container{min-height: 0px}}</style><div id="git_loading" style="width:10%;height:100%;margin:0 auto;display: block;"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 50 50" style="enable-background:new 0 0 50 50" xml:space="preserve"><path fill="#d0d0d0" d="M25.251,6.461c-10.318,0-18.683,8.365-18.683,18.683h4.068c0-8.071,6.543-14.615,14.615-14.615V6.461z" transform="rotate(275.098 25 25)"><animatetransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.6s" repeatCount="indefinite"></animatetransform></path></svg><style>#git_container{display: none;}</style></div><div id="git_container"></div></div>';
+      parent_div_git.insertAdjacentHTML("afterbegin",item_html)
+      console.log('已挂载gitcalendar')
+      }
+
+    if( document.getElementById('gitZone') && (location.pathname ==='/about/'|| '/about/' ==='all')){
+        gitcalendar_injector_config()
+        GitCalendarInit("https://numbers-woad.vercel.app/api?Yun-mark",['#d9e0df', '#c6e0dc', '#a8dcd4', '#9adcd2', '#89ded1', '#77e0d0', '#5fdecb', '#47dcc6', '#39dcc3', '#1fdabe', '#00dab9'],'Yun-mark')
+    }
+  </script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body></html>
